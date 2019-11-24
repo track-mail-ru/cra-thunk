@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import { getContacts } from './actions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = (props) => (
+  <>
+    <button onClick={() => props.getContacts()}>Get contacts now!</button>
+    {props.contacts && props.contacts.length
+      ? props.contacts.map(el => (<p key={el.id}>{el.name}</p>))
+      : <p>Nothing</p>
+    }
+  </>
+)
 
-export default App;
+const mapStateToProps = (state) => ({
+  contacts: state.contacts.contacts,
+})
+
+export default connect(
+  mapStateToProps,
+  { getContacts },
+)(App)
